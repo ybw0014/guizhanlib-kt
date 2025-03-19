@@ -2,9 +2,8 @@
 
 package net.guizhanss.guizhanlib.kt.slimefun.debug
 
-import io.github.seggan.sf4k.extensions.getSlimefun
-import io.github.seggan.sf4k.extensions.isSlimefun
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem
+import net.guizhanss.guizhanlib.kt.slimefun.extensions.getSlimefunItem
+import net.guizhanss.guizhanlib.kt.slimefun.extensions.isSlimefunItem
 import org.bukkit.inventory.ItemStack
 
 /**
@@ -16,8 +15,8 @@ fun Array<out ItemStack?>.debugMessage(): String {
             return@joinToString "null"
         }
 
-        if (itemStack.isSlimefun()) {
-            val sfItem = itemStack.getSlimefun<SlimefunItem>()!!
+        if (itemStack.isSlimefunItem()) {
+            val sfItem = itemStack.getSlimefunItem()
             return@joinToString sfItem.item.toString()
         }
 
