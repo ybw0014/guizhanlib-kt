@@ -6,7 +6,9 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
 /**
- * Retrieve the [PotionEffectType] by the name. For 1.20.5+ compatibility.
+ * Retrieve the [PotionEffectType] by the name.
+ *
+ * The name is automatically converted to [org.bukkit.NamespacedKey] first.
  */
 fun getPotionEffectType(name: String) = PotionEffectType.getByKey(name.toMinecraftKey())
 
