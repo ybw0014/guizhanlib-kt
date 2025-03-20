@@ -24,3 +24,9 @@ val Location.position: BlockPosition
  */
 val BlockMenu.position: BlockPosition
     get() = BlockPosition(location)
+
+/**
+ * Get the [Location] from this [BlockPosition].
+ */
+val BlockPosition.location: Location
+    get() = toLocation()
