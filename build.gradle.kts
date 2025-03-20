@@ -23,13 +23,15 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "kotlin")
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.gradleup.shadow")
 
     dependencies {
+        compileOnly(kotlin("stdlib"))
+        compileOnly(kotlin("reflect"))
         testImplementation(kotlin("test"))
     }
 
@@ -69,14 +71,14 @@ subprojects {
                 version = rootProject.version as String
 
                 pom {
-                    name.set("guizhanlib")
-                    description.set("A library for Slimefun addon development.")
-                    url.set("https://github.com/ybw0014/guizhanlib")
+                    name.set("guizhanlib-kt")
+                    description.set("A Kotlin library for Slimefun addon development.")
+                    url.set("https://github.com/ybw0014/guizhanlib-kt")
 
                     licenses {
                         license {
                             name.set("GPL-3.0 license")
-                            url.set("https://github.com/ybw0014/guizhanlib/blob/master/LICENSE")
+                            url.set("https://github.com/ybw0014/guizhanlib-kt/blob/master/LICENSE")
                             distribution.set("repo")
                         }
                     }
@@ -89,9 +91,9 @@ subprojects {
                     }
 
                     scm {
-                        connection.set("scm:git:git://github.com/ybw0014/guizhanlib.git")
+                        connection.set("scm:git:git://github.com/ybw0014/guizhanlib-kt.git")
                         developerConnection.set("scm:git:ssh://github.com:ybw0014/guizhanlib.git")
-                        url.set("https://github.com/ybw0014/guizhanlib/tree/master")
+                        url.set("https://github.com/ybw0014/guizhanlib-kt/tree/master")
                     }
                 }
             }
