@@ -31,7 +31,7 @@ fun ItemStack.dropItem(loc: Location, amount: Int = 1) {
     val fullStacks = amount / maxStackSize
     val remaining = amount % maxStackSize
     repeat(fullStacks) {
-        val item = clone().apply { this.amount = amount }
+        val item = clone().apply { this.amount = maxStackSize }
         loc.world.dropItem(loc, item)
     }
     if (remaining > 0) {
