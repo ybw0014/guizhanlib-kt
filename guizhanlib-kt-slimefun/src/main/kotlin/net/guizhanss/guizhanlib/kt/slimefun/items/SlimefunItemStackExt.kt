@@ -4,12 +4,11 @@ package net.guizhanss.guizhanlib.kt.slimefun.items
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun
+import net.guizhanss.guizhanlib.kt.common.utils.invoke
 import net.guizhanss.guizhanlib.kt.minecraft.items.ItemStackEditor
 import net.guizhanss.guizhanlib.kt.minecraft.items.edit
 import net.guizhanss.guizhanlib.kt.slimefun.items.ConversionHandler.handler
 import org.bukkit.inventory.ItemStack
-import java.lang.invoke.MethodHandles
-import java.lang.invoke.MethodType
 
 private object ConversionHandler {
 
@@ -17,19 +16,7 @@ private object ConversionHandler {
         { sfis: SlimefunItemStack -> (sfis as ItemStack).clone() }
     } else {
         { sfis: SlimefunItemStack ->
-            {
-                val lookup = MethodHandles.lookup()
-                val methodType = MethodType.methodType(ItemStack::class.java)
-
-                try {
-                    val methodHandle = lookup.findVirtual(this::class.java, "item", methodType)
-
-                    val result = methodHandle(sfis) as ItemStack
-                    result
-                } catch (e: Exception) {
-                    throw RuntimeException("Cannot get ItemStack from SlimefunItemStack.", e)
-                }
-            }
+            sfis.invoke<ItemStack>("item") ?: error("Cannot get ItemStack from SlimefunItemStack")
         }
     }
 }
@@ -40,7 +27,7 @@ private object ConversionHandler {
  * Result is always cloned.
  */
 fun SlimefunItemStack.toItem(): ItemStack {
-    return handler(this) as ItemStack
+    return handler(this)
 }
 
 /**
