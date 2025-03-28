@@ -60,15 +60,15 @@ subprojects {
 
     publishing {
         publications {
-            create<MavenPublication>("maven") {
-                project.shadow.component(this)
+            create<MavenPublication>("shadow") {
+                from(components["shadow"])
 
                 artifact(tasks.named("javadocJar").get())
                 artifact(tasks.named("sourcesJar").get())
 
-                groupId = rootProject.group as String
+                groupId = rootProject.group.toString()
                 artifactId = project.name
-                version = rootProject.version as String
+                version = rootProject.version.toString()
 
                 pom {
                     name.set("guizhanlib-kt")
@@ -98,10 +98,28 @@ subprojects {
                 }
             }
         }
+        repositories {
+            maven {
+                name = "guizhanRepoReleases"
+                url = uri("https://repo.guizhanss.net/releases/")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
+            maven {
+                name = "guizhanRepoSnapshots"
+                url = uri("https://repo.guizhanss.net/snapshots/")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
+        }
     }
 
     signing {
-        sign(publishing.publications["maven"])
+        sign(publishing.publications["shadow"])
     }
 }
 
