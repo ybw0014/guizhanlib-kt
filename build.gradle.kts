@@ -60,7 +60,7 @@ subprojects {
 
     publishing {
         publications {
-            create<MavenPublication>("shadow") {
+            create<MavenPublication>("maven") {
                 from(components["shadow"])
 
                 artifact(tasks.named("javadocJar").get())
@@ -119,7 +119,7 @@ subprojects {
     }
 
     signing {
-        sign(publishing.publications["shadow"])
+        sign(publishing.publications["maven"])
     }
 }
 
