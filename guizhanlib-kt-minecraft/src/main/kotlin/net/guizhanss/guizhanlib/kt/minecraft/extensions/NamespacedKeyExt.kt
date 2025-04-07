@@ -9,3 +9,8 @@ import java.util.Locale
  */
 fun String.toMinecraftKey() =
     NamespacedKey.minecraft(StringUtil.dehumanize(this).lowercase(Locale.ENGLISH))
+
+/**
+ * Create a Minecraft [NamespacedKey] from the string.
+ */
+fun mcKey(key: String) = key.toMinecraftKey()

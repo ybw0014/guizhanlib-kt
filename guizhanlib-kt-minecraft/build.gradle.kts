@@ -13,3 +13,7 @@ dependencies {
 tasks.test {
     dependsOn(":guizhanlib-kt-common:jar")
 }
+
+tasks.shadowJar {
+    dependsOn(":guizhanlib-kt-common:jar")
+}

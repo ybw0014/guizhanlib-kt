@@ -8,6 +8,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class ItemStackEditorTest {
 
@@ -65,5 +66,36 @@ class ItemStackEditorTest {
         assertEquals(loreLines.size, editedItemStack.itemMeta?.lore()?.size)
         assertEquals(Component.text(loreLines[0]), editedItemStack.itemMeta?.lore()?.get(0))
         assertEquals(Component.text(loreLines[1]), editedItemStack.itemMeta?.lore()?.get(1))
+    }
+
+    @Test
+    fun testMeta() {
+        val itemStack = ItemStack(Material.DIAMOND_SWORD)
+        val editedItemStack = itemStack.edit {
+            meta {
+                isUnbreakable = true
+            }
+        }
+        assertNotNull(editedItemStack.itemMeta)
+        assertEquals(true, editedItemStack.itemMeta?.isUnbreakable)
+    }
+
+    @Test
+    fun testCombination() {
+        val itemStack = ItemStack(Material.DIAMOND_SWORD)
+        val editedItemStack = itemStack.edit {
+            amount(3)
+            name("Legendary Sword")
+            lore("Line 1", "Line 2")
+            meta {
+                isUnbreakable = true
+            }
+        }
+        assertEquals(3, editedItemStack.amount)
+        assertEquals(Component.text("Legendary Sword"), editedItemStack.itemMeta?.displayName())
+        assertEquals(2, editedItemStack.itemMeta?.lore()?.size)
+        assertEquals(Component.text("Line 1"), editedItemStack.itemMeta?.lore()?.get(0))
+        assertEquals(Component.text("Line 2"), editedItemStack.itemMeta?.lore()?.get(1))
+        assertEquals(true, editedItemStack.itemMeta?.isUnbreakable)
     }
 }

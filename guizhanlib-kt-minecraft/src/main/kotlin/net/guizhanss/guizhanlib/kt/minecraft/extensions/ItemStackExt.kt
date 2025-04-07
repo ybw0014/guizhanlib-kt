@@ -27,7 +27,7 @@ fun ItemStack?.isAir(): Boolean {
 /**
  * Drop the [ItemStack] with the given amount at the [Location].
  */
-fun ItemStack.dropItem(loc: Location, amount: Int = 1) {
+fun ItemStack.drop(loc: Location, amount: Int = 1) {
     val fullStacks = amount / maxStackSize
     val remaining = amount % maxStackSize
     repeat(fullStacks) {

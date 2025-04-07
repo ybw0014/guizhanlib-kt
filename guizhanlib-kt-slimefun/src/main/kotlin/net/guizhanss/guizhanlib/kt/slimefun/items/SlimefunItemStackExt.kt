@@ -7,17 +7,13 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun
 import net.guizhanss.guizhanlib.kt.common.utils.invoke
 import net.guizhanss.guizhanlib.kt.minecraft.items.ItemStackEditor
 import net.guizhanss.guizhanlib.kt.minecraft.items.edit
-import net.guizhanss.guizhanlib.kt.slimefun.items.ConversionHandler.handler
 import org.bukkit.inventory.ItemStack
 
-private object ConversionHandler {
-
-    val handler = if (ItemStack::class.java.isAssignableFrom(SlimefunItemStack::class.java)) {
-        { sfis: SlimefunItemStack -> (sfis as ItemStack).clone() }
-    } else {
-        { sfis: SlimefunItemStack ->
-            sfis.invoke<ItemStack>("item") ?: error("Cannot get ItemStack from SlimefunItemStack")
-        }
+private val handler = if (ItemStack::class.java.isAssignableFrom(SlimefunItemStack::class.java)) {
+    { sfis: SlimefunItemStack -> (sfis as ItemStack).clone() }
+} else {
+    { sfis: SlimefunItemStack ->
+        sfis.invoke<ItemStack>("item") ?: error("Cannot get ItemStack from SlimefunItemStack")
     }
 }
 
