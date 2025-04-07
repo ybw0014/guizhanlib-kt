@@ -11,6 +11,7 @@ plugins {
 }
 
 group = "net.guizhanss"
+extra["guizhanLibVersion"] = "2.3.0"
 
 allprojects {
     repositories {
@@ -39,8 +40,6 @@ subprojects {
         disableAutoTargetJvm()
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-        withJavadocJar()
-        withSourcesJar()
     }
 
     kotlin {
@@ -62,9 +61,6 @@ subprojects {
         publications {
             create<MavenPublication>("maven") {
                 from(components["shadow"])
-
-                artifact(tasks.named("javadocJar").get())
-                artifact(tasks.named("sourcesJar").get())
 
                 groupId = rootProject.group.toString()
                 artifactId = project.name
