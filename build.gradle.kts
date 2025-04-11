@@ -31,8 +31,13 @@ subprojects {
     apply(plugin = "com.gradleup.shadow")
 
     dependencies {
-        compileOnly(kotlin("stdlib"))
-        compileOnly(kotlin("reflect"))
+        fun compileOnlyAndTestImpl(dep: Any) {
+            compileOnly(dep)
+            testImplementation(dep)
+        }
+
+        compileOnlyAndTestImpl(kotlin("stdlib"))
+        compileOnlyAndTestImpl(kotlin("reflect"))
         testImplementation(kotlin("test"))
     }
 
