@@ -3,6 +3,11 @@ package net.guizhanss.guizhanlib.kt.slimefun.config
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * A single config field in [ConfigContainer].
+ *
+ * @see ConfigContainer
+ */
 class ConfigField<T>(
     private val loader: () -> T
 ) : ReadOnlyProperty<Any?, T> {

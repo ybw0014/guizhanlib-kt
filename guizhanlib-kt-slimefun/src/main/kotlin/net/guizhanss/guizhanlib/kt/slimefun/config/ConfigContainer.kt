@@ -2,6 +2,12 @@ package net.guizhanss.guizhanlib.kt.slimefun.config
 
 import net.guizhanss.guizhanlib.slimefun.addon.AddonConfig
 
+/**
+ * A wrapper class for easy management of config fields in [AddonConfig].
+ *
+ * @see ConfigField
+ * @see ConfigBuilder
+ */
 class ConfigContainer(val config: AddonConfig) {
 
     private val _fields = mutableListOf<ConfigField<*>>()

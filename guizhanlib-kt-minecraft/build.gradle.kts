@@ -7,7 +7,7 @@ dependencies {
     }
 
     compileOnlyAndTestImpl("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
+    compileOnlyAndTestImpl("net.guizhanss:guizhanlib-minecraft:$guizhanLibVersion")
     api(project(":guizhanlib-kt-common", configuration = "shadow"))
-    api("net.guizhanss:guizhanlib-minecraft:$guizhanLibVersion")
     testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.45.0")
 }
