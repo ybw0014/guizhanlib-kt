@@ -8,6 +8,7 @@ plugins {
     kotlin("jvm") version "2.1.20"
     id("com.gradleup.shadow") version "8.3.6"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 group = "net.guizhanss"
@@ -29,6 +30,7 @@ subprojects {
     apply(plugin = "signing")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.gradleup.shadow")
+    apply(plugin = "org.jetbrains.dokka")
 
     dependencies {
         fun compileOnlyAndTestImpl(dep: Any) {
@@ -58,6 +60,17 @@ subprojects {
         useJUnitPlatform()
     }
 
+    val sourcesJar by tasks.creating(Jar::class) {
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
+    }
+
+    val javadocJar by tasks.creating(Jar::class) {
+        archiveClassifier.set("javadoc")
+        from(tasks.named("dokkaHtml"))
+        dependsOn("dokkaHtml")
+    }
+
     tasks.withType<ShadowJar> {
         archiveClassifier = ""
     }
@@ -70,6 +83,9 @@ subprojects {
                 groupId = rootProject.group.toString()
                 artifactId = project.name
                 version = rootProject.version.toString()
+
+                artifact(sourcesJar)
+                artifact(javadocJar)
 
                 pom {
                     name.set("guizhanlib-kt")
