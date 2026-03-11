@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "net.guizhanss"
-extra["guizhanLibVersion"] = "2.3.0"
+extra["guizhanLibVersion"] = "3.0.0-SNAPSHOT"
 
 allprojects {
     repositories {
@@ -40,6 +40,10 @@ subprojects {
 
         compileOnlyAndTestImpl(kotlin("stdlib"))
         compileOnlyAndTestImpl(kotlin("reflect"))
+        compileOnlyAndTestImpl("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.1")
+        testImplementation("com.github.MockBukkit:MockBukkit:v1.21-SNAPSHOT")
         testImplementation(kotlin("test"))
     }
 
@@ -109,27 +113,9 @@ subprojects {
 
                     scm {
                         connection.set("scm:git:git://github.com/ybw0014/guizhanlib-kt.git")
-                        developerConnection.set("scm:git:ssh://github.com:ybw0014/guizhanlib.git")
+                        developerConnection.set("scm:git:ssh://github.com:ybw0014/guizhanlib-kt.git")
                         url.set("https://github.com/ybw0014/guizhanlib-kt/tree/master")
                     }
-                }
-            }
-        }
-        repositories {
-            maven {
-                name = "guizhanRepoReleases"
-                url = uri("https://repo.guizhanss.net/releases/")
-                credentials(PasswordCredentials::class)
-                authentication {
-                    create<BasicAuthentication>("basic")
-                }
-            }
-            maven {
-                name = "guizhanRepoSnapshots"
-                url = uri("https://repo.guizhanss.net/snapshots/")
-                credentials(PasswordCredentials::class)
-                authentication {
-                    create<BasicAuthentication>("basic")
                 }
             }
         }

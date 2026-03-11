@@ -1,13 +1,13 @@
-package net.guizhanss.guizhanlib.kt.slimefun.config.migration
+package net.guizhanss.guizhanlib.kt.minecraft.config.migration
 
-import net.guizhanss.guizhanlib.slimefun.addon.AddonConfig
+import net.guizhanss.guizhanlib.minecraft.config.YamlConfig
 
 /**
  * A single migration to handle configuration changes between 2 versions.
  */
 class ConfigMigration(val fromVersion: Int, val toVersion: Int) {
 
-    private val operations = mutableListOf<(AddonConfig) -> Unit>()
+    private val operations = mutableListOf<(YamlConfig) -> Unit>()
 
     /**
      * The config field has changed path.
@@ -43,7 +43,7 @@ class ConfigMigration(val fromVersion: Int, val toVersion: Int) {
         }
     }
 
-    internal fun applyTo(config: AddonConfig) {
+    internal fun applyTo(config: YamlConfig) {
         operations.forEach { it(config) }
         config.set("version", toVersion)
     }

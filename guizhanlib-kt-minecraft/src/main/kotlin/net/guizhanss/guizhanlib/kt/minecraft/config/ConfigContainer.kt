@@ -1,14 +1,14 @@
-package net.guizhanss.guizhanlib.kt.slimefun.config
+package net.guizhanss.guizhanlib.kt.minecraft.config
 
-import net.guizhanss.guizhanlib.slimefun.addon.AddonConfig
+import net.guizhanss.guizhanlib.minecraft.config.YamlConfig
 
 /**
- * A wrapper class for easy management of config fields in [AddonConfig].
+ * A wrapper class for easy management of config fields in [YamlConfig].
  *
  * @see ConfigField
  * @see ConfigBuilder
  */
-class ConfigContainer(val config: AddonConfig) {
+class ConfigContainer(val config: YamlConfig) {
 
     private val _fields = mutableListOf<ConfigField<*>>()
     val fields: List<ConfigField<*>>

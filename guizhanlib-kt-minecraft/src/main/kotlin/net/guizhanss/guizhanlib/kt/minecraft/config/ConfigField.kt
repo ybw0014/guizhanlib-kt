@@ -1,4 +1,4 @@
-package net.guizhanss.guizhanlib.kt.slimefun.config
+package net.guizhanss.guizhanlib.kt.minecraft.config
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty

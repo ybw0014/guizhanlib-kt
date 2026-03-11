@@ -1,6 +1,6 @@
-package net.guizhanss.guizhanlib.kt.slimefun.config.migration
+package net.guizhanss.guizhanlib.kt.minecraft.config.migration
 
-import net.guizhanss.guizhanlib.slimefun.addon.AddonConfig
+import net.guizhanss.guizhanlib.minecraft.config.YamlConfig
 
 class MigrationManager {
 
@@ -12,7 +12,7 @@ class MigrationManager {
         migrations[fromVersion] = migration
     }
 
-    internal fun migrate(config: AddonConfig) {
+    internal fun migrate(config: YamlConfig) {
         val currentVersion = config.getInt("version", 1)
 
         var version = currentVersion
