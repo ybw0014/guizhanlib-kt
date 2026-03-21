@@ -1,0 +1,8 @@
+name: TestPlugin
+version: 1.0.0
+main: net.guizhanss.guizhanlib.kt.minecraft.command.TestPlugin
+api-version: '1.21'
+commands:
+  test:
+    description: Test command for unit tests
+    usage: /test [args]

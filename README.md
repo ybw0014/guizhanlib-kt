@@ -27,3 +27,7 @@ repositories {
     maven("https://s01.oss.sonatype.org/content/group/public/")
 }
 ```
+
+## Manuals
+
+- [Kommand](./KOMMAND_MANUAL.md) for the DSL style command framework
