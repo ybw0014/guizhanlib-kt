@@ -10,7 +10,7 @@ import org.bukkit.potion.PotionEffectType
  *
  * The name is automatically converted to [org.bukkit.NamespacedKey] first.
  */
-fun getPotionEffectType(name: String) = PotionEffectType.getByKey(name.toMinecraftKey())
+fun getPotionEffectType(name: String) = PotionEffectType.getByKey(name.toNamespacedKey())
 
 /**
  * Build a [PotionEffect] by the name, duration, and amplifier.

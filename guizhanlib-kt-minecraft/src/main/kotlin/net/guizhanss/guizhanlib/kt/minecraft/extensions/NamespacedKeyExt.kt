@@ -5,12 +5,12 @@ import org.bukkit.NamespacedKey
 import java.util.Locale
 
 /**
- * Create a Minecraft [NamespacedKey] from the string.
+ * Create a [NamespacedKey] from the string.
  */
-fun String.toMinecraftKey() =
-    NamespacedKey.minecraft(StringUtil.dehumanize(this).lowercase(Locale.ENGLISH))
+fun String.toNamespacedKey() =
+    NamespacedKey.fromString(StringUtil.dehumanize(this).lowercase(Locale.ENGLISH))
 
 /**
  * Create a Minecraft [NamespacedKey] from the string.
  */
-fun mcKey(key: String) = key.toMinecraftKey()
+fun mcKey(key: String) = key.toNamespacedKey()
