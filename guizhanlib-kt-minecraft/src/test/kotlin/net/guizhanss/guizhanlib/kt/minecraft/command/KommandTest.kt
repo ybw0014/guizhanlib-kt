@@ -2,6 +2,8 @@ package net.guizhanss.guizhanlib.kt.minecraft.command
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.command.CommandMap
+import org.bukkit.command.PluginCommand
 import org.mockbukkit.mockbukkit.MockBukkit
 import org.mockbukkit.mockbukkit.ServerMock
 import kotlin.test.AfterTest
@@ -9,6 +11,9 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class KommandTest {
@@ -25,6 +30,33 @@ class KommandTest {
     @AfterTest
     fun afterTest() {
         MockBukkit.unmock()
+    }
+
+    private fun resolveCommandMap(): CommandMap {
+        val publicMethod = server.javaClass.methods.firstOrNull {
+            it.name == "getCommandMap" && it.parameterCount == 0
+        }
+        if (publicMethod != null) {
+            return publicMethod.invoke(server) as CommandMap
+        }
+
+        var currentType: Class<*>? = server.javaClass
+        while (currentType != null) {
+            val field = currentType.declaredFields.firstOrNull {
+                it.name == "commandMap" && CommandMap::class.java.isAssignableFrom(it.type)
+            }
+            if (field != null) {
+                field.isAccessible = true
+                return field.get(server) as CommandMap
+            }
+            currentType = currentType.superclass
+        }
+
+        error("Unable to resolve MockBukkit command map for tests.")
+    }
+
+    private fun findPluginCommand(name: String): PluginCommand? {
+        return resolveCommandMap().getCommand(name) as? PluginCommand
     }
 
     @Test
@@ -94,6 +126,8 @@ class KommandTest {
         val player = server.addPlayer()
         var executions = 0
 
+        assertNull(findPluginCommand("dynamic"))
+
         val dynamicCommand = baseCommand(plugin, "dynamic") {
             aliases = listOf("dyn")
             description = Component.text("Dynamic command")
@@ -103,11 +137,28 @@ class KommandTest {
         }
 
         assertEquals("dynamic", dynamicCommand.name)
+        assertSame(dynamicCommand.command, findPluginCommand("dynamic"))
+        assertSame(dynamicCommand.command, findPluginCommand("dyn"))
 
         player.performCommand("dynamic")
         player.performCommand("dyn")
 
         assertEquals(2, executions)
+    }
+
+    @Test
+    fun testDeclaredPluginYmlCommandIsReused() {
+        val declaredCommand = assertNotNull(findPluginCommand("test"))
+
+        val baseCommand = baseCommand(plugin, "test") {
+            aliases = listOf("declared")
+            description = Component.text("Declared command")
+            execute { }
+        }
+
+        assertSame(declaredCommand, baseCommand.command)
+        assertSame(plugin, baseCommand.command.plugin)
+        assertSame(baseCommand.command, findPluginCommand("declared"))
     }
 
     @Test

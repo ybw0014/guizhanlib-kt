@@ -25,7 +25,10 @@ baseCommand(plugin, "admin") {
 }
 ```
 
-And that's it, Kommand handles the registering for you.
+And that's it, Kommand handles the root registration for you.
+
+- If the root command already exists in your `plugin.yml`, Kommand reuses that plugin-owned `PluginCommand`.
+- If the root command is not declared there, Kommand creates and registers it dynamically.
 
 ## Root Commands and Subcommands
 
@@ -294,7 +297,7 @@ baseCommand(plugin, "admin") {
 }
 ```
 
-Aliases are applied automatically during root command registration. You do not need a separate alias registration call.
+Aliases are applied automatically whether Kommand reuses a `plugin.yml` command or falls back to dynamic registration. You do not need a separate alias registration call.
 
 ## Help Output
 
@@ -436,7 +439,7 @@ val admin = baseCommand(plugin, "admin") {
 Kommand gives you a compact Kotlin DSL for:
 
 - root commands via `baseCommand(plugin, name)`
-- automatic root command registration
+- automatic root command registration with `plugin.yml` reuse and dynamic fallback
 - nested subcommands
 - Adventure-based descriptions and messages
 - permission checks

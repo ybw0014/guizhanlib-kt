@@ -328,7 +328,8 @@ class BaseKommand internal constructor(
 }
 
 internal fun resolvePluginCommand(plugin: JavaPlugin, name: String, aliases: List<String>): PluginCommand {
-    val existingCommand = plugin.getCommand(name)
+    val commandMap = resolveCommandMap()
+    val existingCommand = resolvePluginOwnedCommand(commandMap, plugin, name)
     if (existingCommand != null) {
         if (aliases.isNotEmpty()) {
             existingCommand.aliases = aliases
@@ -340,8 +341,29 @@ internal fun resolvePluginCommand(plugin: JavaPlugin, name: String, aliases: Lis
     if (aliases.isNotEmpty()) {
         command.aliases = aliases
     }
-    resolveCommandMap().register(plugin.name.lowercase(), command)
+    commandMap.register(plugin.name.lowercase(), command)
     return command
+}
+
+private fun resolvePluginOwnedCommand(commandMap: CommandMap, plugin: JavaPlugin, name: String): PluginCommand? {
+    val directCommand = commandMap.getCommand(name)
+    if (directCommand is PluginCommand && directCommand.plugin === plugin) {
+        return directCommand
+    }
+
+    val fallbackName = "${plugin.name.lowercase()}:$name"
+    val fallbackCommand = commandMap.getCommand(fallbackName)
+    if (fallbackCommand is PluginCommand && fallbackCommand.plugin === plugin) {
+        return fallbackCommand
+    }
+
+    val knownCommands = resolveKnownCommands(commandMap) ?: return null
+    return knownCommands.values
+        .asSequence()
+        .mapNotNull { it as? PluginCommand }
+        .firstOrNull { command ->
+            command.plugin === plugin && command.name.equals(name, ignoreCase = true)
+        }
 }
 
 class SubKommand internal constructor(
