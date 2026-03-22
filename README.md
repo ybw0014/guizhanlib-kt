@@ -1,6 +1,8 @@
 # GuizhanLib for Kotlin
 
-The extended [GuizhanLib](https://github.com/ybw0014/guizhanlib) for Kotlin Slimefun addon development.
+[![Maven Central](https://img.shields.io/maven-central/v/net.guizhanss/guizhanlib-kt-all.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/net.guizhanss/guizhanlib-kt-all)
+
+The extended [GuizhanLib](https://github.com/ybw0014/guizhanlib) for Kotlin Slimefun/Rebar addon development.
 
 Adopted and extended part of [sf4k](https://github.com/Seggan/sf4k).
 
@@ -24,7 +26,7 @@ If you want to use snapshot versions, add the following to your `repositories`:
 
 ```kotlin
 repositories {
-    maven("https://s01.oss.sonatype.org/content/group/public/")
+    maven("https://central.sonatype.com/repository/maven-snapshots/")
 }
 ```
 
