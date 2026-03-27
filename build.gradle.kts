@@ -9,6 +9,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.6"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("org.jetbrains.dokka") version "1.9.10"
+    id("com.diffplug.spotless") version "8.3.0"
 }
 
 group = "net.guizhanss"
@@ -31,6 +32,18 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.gradleup.shadow")
     apply(plugin = "org.jetbrains.dokka")
+    apply(plugin = "com.diffplug.spotless")
+
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        kotlin {
+            ktlint().editorConfigOverride(
+                mapOf(
+                    "ktlint_code_style" to "intellij_idea",
+                    "ktlint_standard_no-unused-imports" to "enabled"
+                )
+            )
+        }
+    }
 
     dependencies {
         fun compileOnlyAndTestImpl(dep: Any) {

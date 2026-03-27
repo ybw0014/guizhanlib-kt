@@ -22,15 +22,12 @@ private val handler = if (ItemStack::class.java.isAssignableFrom(SlimefunItemSta
  *
  * Result is always cloned.
  */
-fun SlimefunItemStack.toItem(): ItemStack {
-    return handler(this)
-}
+fun SlimefunItemStack.toItem(): ItemStack = handler(this)
 
 /**
  * Edit the given [SlimefunItemStack] and get the edited [ItemStack].
  */
-fun SlimefunItemStack.edit(block: ItemStackEditor.() -> Unit): ItemStack =
-    toItem().edit(block)
+fun SlimefunItemStack.edit(block: ItemStackEditor.() -> Unit): ItemStack = toItem().edit(block)
 
 /**
  * Edit the given [SlimefunItemStack] and get the edited [SlimefunItemStack].

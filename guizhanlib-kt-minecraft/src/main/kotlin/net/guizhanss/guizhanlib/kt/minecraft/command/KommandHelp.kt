@@ -19,8 +19,6 @@ internal object DefaultKommandHelpFormatter : KommandHelpFormatter {
     }
 }
 
-internal fun Kommand.defaultHelpLine(label: String): ComponentLike {
-    return Component.text(fullUsage(label), NamedTextColor.YELLOW)
-        .append(Component.text(" - ", NamedTextColor.WHITE))
-        .append(description.asComponent())
-}
+internal fun Kommand.defaultHelpLine(label: String): ComponentLike = Component.text(fullUsage(label), NamedTextColor.YELLOW)
+    .append(Component.text(" - ", NamedTextColor.WHITE))
+    .append(description.asComponent())

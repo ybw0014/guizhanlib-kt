@@ -42,7 +42,7 @@ class SlimefunItemBuilder(private val registry: ItemRegistry) {
             "${registry.prefix}$id",
             material.convert(),
             name,
-            *lore.toTypedArray()
+            *lore.toTypedArray(),
         )
         sfis.amount = amount
 
@@ -52,8 +52,11 @@ class SlimefunItemBuilder(private val registry: ItemRegistry) {
         val constructor = clazz.constructors.firstOrNull { constructor ->
             constructor.valueParameters.size == args.size && constructor.valueParameters.zip(args).all { (param, arg) ->
                 val classifier = param.type.classifier as? KClass<*> ?: return@all false
-                if (arg == null) param.type.isMarkedNullable
-                else classifier.isInstance(arg)
+                if (arg == null) {
+                    param.type.isMarkedNullable
+                } else {
+                    classifier.isInstance(arg)
+                }
             }
         } ?: error("No constructor found for ${clazz.simpleName} with arguments: ${args.joinToString()}")
 
@@ -70,7 +73,7 @@ class SlimefunItemBuilder(private val registry: ItemRegistry) {
 
 inline fun <reified I : SlimefunItem> ItemRegistry.buildSlimefunItem(
     vararg otherArgs: Any?,
-    crossinline builder: SlimefunItemBuilder.() -> Unit
+    crossinline builder: SlimefunItemBuilder.() -> Unit,
 ) = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, SlimefunItemStack>> { _, property ->
     val itemBuilder = SlimefunItemBuilder(this)
     itemBuilder.id = property.name.uppercase()

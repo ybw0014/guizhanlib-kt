@@ -55,9 +55,7 @@ class KommandTest {
         error("Unable to resolve MockBukkit command map for tests.")
     }
 
-    private fun findPluginCommand(name: String): PluginCommand? {
-        return resolveCommandMap().getCommand(name) as? PluginCommand
-    }
+    private fun findPluginCommand(name: String): PluginCommand? = resolveCommandMap().getCommand(name) as? PluginCommand
 
     @Test
     fun testBaseCommandCreation() {
@@ -265,7 +263,7 @@ class KommandTest {
         assertTrue(
             component.asComponent().children().isNotEmpty() ||
                 component.asComponent().color() != null ||
-                component.asComponent() != Component.empty()
+                component.asComponent() != Component.empty(),
         )
     }
 
@@ -322,7 +320,7 @@ class KommandTest {
 
         assertTrue(
             baseCommand.description.asComponent().children().isNotEmpty() ||
-                baseCommand.description.asComponent().color() != null
+                baseCommand.description.asComponent().color() != null,
         )
     }
 

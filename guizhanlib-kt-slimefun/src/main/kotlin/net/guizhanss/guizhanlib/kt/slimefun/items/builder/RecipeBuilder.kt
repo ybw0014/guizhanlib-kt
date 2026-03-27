@@ -30,8 +30,8 @@ class RecipeBuilder(private val size: Int) {
      * Adds a recipe row
      */
     operator fun String.unaryPlus() {
-        require(length == size) { "Recipe must be ${size}x${size}" }
-        require(row < size) { "Recipe must be ${size}x${size}" }
+        require(length == size) { "Recipe must be ${size}x$size" }
+        require(row < size) { "Recipe must be ${size}x$size" }
         recipe[row++] = this
     }
 
@@ -56,9 +56,7 @@ class RecipeBuilder(private val size: Int) {
         charMap.put(this, ItemStack(material))
     }
 
-    fun build(): Array<out ItemStack?> {
-        return recipe.flatMap { row -> row.map { charMap[it] } }.toTypedArray()
-    }
+    fun build(): Array<out ItemStack?> = recipe.flatMap { row -> row.map { charMap[it] } }.toTypedArray()
 }
 
 @OptIn(ExperimentalContracts::class)

@@ -23,8 +23,5 @@ class ConfigContainer(val config: YamlConfig) {
         config.save()
     }
 
-    internal fun <T> register(loader: () -> T): ConfigField<T> {
-        return ConfigField(loader).also { _fields += it }
-    }
-
+    internal fun <T> register(loader: () -> T): ConfigField<T> = ConfigField(loader).also { _fields += it }
 }

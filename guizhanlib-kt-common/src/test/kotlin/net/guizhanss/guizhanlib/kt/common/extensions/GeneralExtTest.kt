@@ -9,7 +9,9 @@ import kotlin.test.assertTrue
 class GeneralExtTest {
 
     private enum class TestEnum {
-        ONE, TWO, THREE
+        ONE,
+        TWO,
+        THREE,
     }
 
     @Test

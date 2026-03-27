@@ -21,7 +21,9 @@ class ReflectionUtilsTest {
     }
 
     enum class Color {
-        RED, GREEN, BLUE
+        RED,
+        GREEN,
+        BLUE,
     }
 
     class Constants {

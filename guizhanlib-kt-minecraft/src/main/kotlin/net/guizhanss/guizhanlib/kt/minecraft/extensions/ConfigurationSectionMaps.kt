@@ -21,7 +21,7 @@ import kotlin.text.uppercase
 inline fun <reified K, reified V> ConfigurationSection?.loadMap(
     keyParser: (String) -> K? = { key -> key as? K },
     valueParser: (Any?) -> V? = { value -> value as? V },
-    valuePredicate: (V) -> Boolean = { true }
+    valuePredicate: (V) -> Boolean = { true },
 ): Map<K, V> {
     if (this == null) return emptyMap()
 
@@ -40,24 +40,22 @@ inline fun <reified K, reified V> ConfigurationSection?.loadMap(
  */
 inline fun <reified K : Enum<K>, reified V> ConfigurationSection?.loadEnumKeyMap(
     valueParser: (Any?) -> V? = { value -> value as? V },
-    valuePredicate: (V) -> Boolean = { true }
+    valuePredicate: (V) -> Boolean = { true },
 ): Map<K, V> = loadMap(
     keyParser = { keyStr -> valueOfOrNull<K>(keyStr.uppercase(Locale.getDefault())) },
     valueParser,
-    valuePredicate
+    valuePredicate,
 )
 
 /**
  * Loads a map from the [ConfigurationSection] with string keys and integer values.
  */
-fun ConfigurationSection?.loadIntMap(valuePredicate: (Int) -> Boolean = { true }) =
-    loadMap<String, Int>(valuePredicate = valuePredicate)
+fun ConfigurationSection?.loadIntMap(valuePredicate: (Int) -> Boolean = { true }) = loadMap<String, Int>(valuePredicate = valuePredicate)
 
 /**
  * Loads a map from the [ConfigurationSection] with string keys and long values.
  */
-fun ConfigurationSection?.loadDoubleMap(valuePredicate: (Double) -> Boolean = { true }) =
-    loadMap<String, Double>(valuePredicate = valuePredicate)
+fun ConfigurationSection?.loadDoubleMap(valuePredicate: (Double) -> Boolean = { true }) = loadMap<String, Double>(valuePredicate = valuePredicate)
 
 /**
  * Loads a map from the [ConfigurationSection] with string keys and boolean values.
@@ -67,8 +65,7 @@ fun ConfigurationSection?.loadBooleanMap() = loadMap<String, Boolean>()
 /**
  * Loads a map from the [ConfigurationSection] with string keys and string values.
  */
-fun ConfigurationSection?.loadStringMap(valuePredicate: (String) -> Boolean = { true }) =
-    loadMap<String, String>(valueParser = { it.toString() }, valuePredicate = valuePredicate)
+fun ConfigurationSection?.loadStringMap(valuePredicate: (String) -> Boolean = { true }) = loadMap<String, String>(valueParser = { it.toString() }, valuePredicate = valuePredicate)
 
 /**
  * Loads a map from the [ConfigurationSection] with string keys and [ConfigurationSection] values.
@@ -78,6 +75,4 @@ fun ConfigurationSection?.loadSectionMap() = loadMap<String, ConfigurationSectio
 /**
  * Loads a map from the [ConfigurationSection] with [Enchantment] keys and values as their levels.
  */
-fun ConfigurationSection?.loadEnchantmentKeyMap() =
-    loadMap<Enchantment, Int>({ key -> Enchantment.getByName(key) }, valuePredicate = { it >= 1 })
-
+fun ConfigurationSection?.loadEnchantmentKeyMap() = loadMap<Enchantment, Int>({ key -> Enchantment.getByName(key) }, valuePredicate = { it >= 1 })

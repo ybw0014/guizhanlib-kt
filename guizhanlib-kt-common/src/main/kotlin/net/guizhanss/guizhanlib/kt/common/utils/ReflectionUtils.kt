@@ -10,30 +10,31 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.valueParameters
 import java.lang.Enum as JavaEnum
 
-fun Class<*>.toPrimitiveType() =
-    when (this) {
-        java.lang.Integer::class.java -> Int::class.javaPrimitiveType ?: this
-        java.lang.Long::class.java -> Long::class.javaPrimitiveType ?: this
-        java.lang.Short::class.java -> Short::class.javaPrimitiveType ?: this
-        java.lang.Byte::class.java -> Byte::class.javaPrimitiveType ?: this
-        java.lang.Double::class.java -> Double::class.javaPrimitiveType ?: this
-        java.lang.Float::class.java -> Float::class.javaPrimitiveType ?: this
-        java.lang.Character::class.java -> Char::class.javaPrimitiveType ?: this
-        java.lang.Boolean::class.java -> Boolean::class.javaPrimitiveType ?: this
-        else -> this
-    }
+fun Class<*>.toPrimitiveType() = when (this) {
+    java.lang.Integer::class.java -> Int::class.javaPrimitiveType ?: this
+    java.lang.Long::class.java -> Long::class.javaPrimitiveType ?: this
+    java.lang.Short::class.java -> Short::class.javaPrimitiveType ?: this
+    java.lang.Byte::class.java -> Byte::class.javaPrimitiveType ?: this
+    java.lang.Double::class.java -> Double::class.javaPrimitiveType ?: this
+    java.lang.Float::class.java -> Float::class.javaPrimitiveType ?: this
+    java.lang.Character::class.java -> Char::class.javaPrimitiveType ?: this
+    java.lang.Boolean::class.java -> Boolean::class.javaPrimitiveType ?: this
+    else -> this
+}
 
 /**
  * Find a Kotlin constructor of the class that matches the given arguments.
  */
-fun <T : Any> KClass<T>.getConstructor(vararg args: Any?): KFunction<T>? =
-    this.constructors.firstOrNull { constructor ->
-        constructor.valueParameters.size == args.size && constructor.valueParameters.zip(args).all { (param, arg) ->
-            val classifier = param.type.classifier as? KClass<*> ?: return@all false
-            if (arg == null) param.type.isMarkedNullable
-            else classifier.isInstance(arg)
+fun <T : Any> KClass<T>.getConstructor(vararg args: Any?): KFunction<T>? = this.constructors.firstOrNull { constructor ->
+    constructor.valueParameters.size == args.size && constructor.valueParameters.zip(args).all { (param, arg) ->
+        val classifier = param.type.classifier as? KClass<*> ?: return@all false
+        if (arg == null) {
+            param.type.isMarkedNullable
+        } else {
+            classifier.isInstance(arg)
         }
     }
+}
 
 /**
  * Invoke a method on the given object with specified name, arguments, and return type.
@@ -65,7 +66,7 @@ fun <T> MethodHandles.Lookup.findMethodHandle(
     clazz: Class<*>?,
     name: String,
     returnType: Class<T>,
-    argTypes: Array<Class<*>>
+    argTypes: Array<Class<*>>,
 ): MethodHandle? {
     var currentClass = clazz
     while (currentClass != null) {

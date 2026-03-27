@@ -10,9 +10,7 @@ import org.bukkit.command.CommandSender
 
 private val legacySectionSerializer = LegacyComponentSerializer.legacySection()
 
-fun String.asLegacyComponent(): Component {
-    return legacySectionSerializer.deserialize(ChatColor.translateAlternateColorCodes('&', this))
-}
+fun String.asLegacyComponent(): Component = legacySectionSerializer.deserialize(ChatColor.translateAlternateColorCodes('&', this))
 
 fun CommandSender.sendMessage(message: ComponentLike) {
     sendMessage(message.asComponent())

@@ -19,9 +19,7 @@ class ItemStackEditor(private val original: ItemStack) {
     private var clearLore = false
     private var editMeta: (ItemMeta.() -> Unit)? = null
 
-    private fun deserialize(text: String): Component {
-        return LegacyComponentSerializer.legacySection().deserialize(ChatColor.translateAlternateColorCodes('&', text))
-    }
+    private fun deserialize(text: String): Component = LegacyComponentSerializer.legacySection().deserialize(ChatColor.translateAlternateColorCodes('&', text))
 
     /**
      * Set the amount of the item.

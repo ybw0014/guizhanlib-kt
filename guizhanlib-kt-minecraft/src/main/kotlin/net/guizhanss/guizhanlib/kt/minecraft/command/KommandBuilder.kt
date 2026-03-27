@@ -101,7 +101,7 @@ abstract class KommandNodeBuilder {
 
 class BaseKommandBuilder internal constructor(
     private val plugin: JavaPlugin,
-    private val commandName: String
+    private val commandName: String,
 ) : KommandNodeBuilder() {
 
     var aliases: List<String> = emptyList()
@@ -129,7 +129,7 @@ class BaseKommandBuilder internal constructor(
             senderType = senderType,
             senderTypeMessage = senderTypeMessage,
             cooldown = cooldown,
-            cooldownMessage = cooldownMessage
+            cooldownMessage = cooldownMessage,
         )
 
         root.subCommands = subCommandBuilders
@@ -171,7 +171,7 @@ class SubKommandBuilder internal constructor() : KommandNodeBuilder() {
             senderType = senderType,
             senderTypeMessage = senderTypeMessage,
             cooldown = cooldown,
-            cooldownMessage = cooldownMessage
+            cooldownMessage = cooldownMessage,
         )
 
         current.subCommands = subCommandBuilders
@@ -182,8 +182,6 @@ class SubKommandBuilder internal constructor() : KommandNodeBuilder() {
     }
 }
 
-fun baseCommand(plugin: JavaPlugin, name: String, block: BaseKommandBuilder.() -> Unit): BaseKommand {
-    return BaseKommandBuilder(plugin, name)
-        .apply(block)
-        .build()
-}
+fun baseCommand(plugin: JavaPlugin, name: String, block: BaseKommandBuilder.() -> Unit): BaseKommand = BaseKommandBuilder(plugin, name)
+    .apply(block)
+    .build()

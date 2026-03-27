@@ -16,14 +16,11 @@ class ConfigBuilder(private val config: YamlConfig) {
 
     fun boolean(path: String, default: Boolean) = container.register { config.getBoolean(path, default) }
 
-    fun int(path: String, default: Int, min: Int = Int.MIN_VALUE, max: Int = Int.MAX_VALUE) =
-        container.register { config.getInt(path, default).coerceIn(min, max) }
+    fun int(path: String, default: Int, min: Int = Int.MIN_VALUE, max: Int = Int.MAX_VALUE) = container.register { config.getInt(path, default).coerceIn(min, max) }
 
-    fun long(path: String, default: Long, min: Long = Long.MIN_VALUE, max: Long = Long.MAX_VALUE) =
-        container.register { config.getLong(path, default).coerceIn(min, max) }
+    fun long(path: String, default: Long, min: Long = Long.MIN_VALUE, max: Long = Long.MAX_VALUE) = container.register { config.getLong(path, default).coerceIn(min, max) }
 
-    fun double(path: String, default: Double, min: Double = Double.MAX_VALUE, max: Double = Double.MAX_VALUE) =
-        container.register { config.getDouble(path, default).coerceIn(min, max) }
+    fun double(path: String, default: Double, min: Double = Double.MAX_VALUE, max: Double = Double.MAX_VALUE) = container.register { config.getDouble(path, default).coerceIn(min, max) }
 
     fun string(path: String, default: String) = container.register { config.getString(path) ?: default }
 
@@ -45,7 +42,10 @@ class ConfigBuilder(private val config: YamlConfig) {
  * @param builder DSL builder.
  */
 fun yamlConfig(
-    plugin: JavaPlugin, file: String, migrations: MigrationManager? = null, builder: ConfigBuilder.() -> Unit
+    plugin: JavaPlugin,
+    file: String,
+    migrations: MigrationManager? = null,
+    builder: ConfigBuilder.() -> Unit,
 ): ConfigContainer {
     val ymlConfig = YamlConfig(plugin, file)
 

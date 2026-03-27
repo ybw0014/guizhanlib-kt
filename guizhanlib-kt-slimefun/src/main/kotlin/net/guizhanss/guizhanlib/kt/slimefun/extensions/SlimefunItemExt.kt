@@ -26,5 +26,4 @@ fun ItemStack?.getSlimefunItem() = SlimefunItem.getByItem(this) ?: error("Not a 
  * Cast to the specified [SlimefunItem] subclass.
  */
 @JvmName("getSlimefunItemGeneric")
-inline fun <reified T : SlimefunItem> ItemStack?.getSlimefunItem() =
-    SlimefunItem.getByItem(this) as? T ?: error("Not a SlimefunItem")
+inline fun <reified T : SlimefunItem> ItemStack?.getSlimefunItem() = SlimefunItem.getByItem(this) as? T ?: error("Not a SlimefunItem")

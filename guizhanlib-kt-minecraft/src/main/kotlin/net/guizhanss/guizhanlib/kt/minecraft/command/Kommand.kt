@@ -7,8 +7,8 @@ import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
-import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
 import org.bukkit.command.TabCompleter
@@ -27,7 +27,7 @@ private val usageArgPattern = Regex("<[^>]*>|\\[[^]]*]|\\S+")
 enum class SenderType {
     ANY,
     PLAYER_ONLY,
-    CONSOLE_ONLY
+    CONSOLE_ONLY,
 }
 
 /**
@@ -69,7 +69,7 @@ sealed class Kommand(
     val senderType: SenderType,
     val senderTypeMessage: ComponentLike,
     val cooldown: Long,
-    val cooldownMessage: ComponentLike
+    val cooldownMessage: ComponentLike,
 ) {
 
     internal var subCommands: List<SubKommand> = emptyList()
@@ -91,27 +91,23 @@ sealed class Kommand(
             }
         }
 
-    fun hasPermission(sender: CommandSender): Boolean {
-        return permission == null || sender.hasPermission(permission)
-    }
+    fun hasPermission(sender: CommandSender): Boolean = permission == null || sender.hasPermission(permission)
 
     fun hasFullPermission(sender: CommandSender): Boolean {
         val perm = fullPermission ?: return true
         return sender.hasPermission(perm)
     }
 
-    private fun checkSenderType(sender: CommandSender): Boolean {
-        return when (senderType) {
-            SenderType.ANY -> true
-            SenderType.PLAYER_ONLY -> sender is Player
-            SenderType.CONSOLE_ONLY -> sender !is Player
-        }
+    private fun checkSenderType(sender: CommandSender): Boolean = when (senderType) {
+        SenderType.ANY -> true
+        SenderType.PLAYER_ONLY -> sender is Player
+        SenderType.CONSOLE_ONLY -> sender !is Player
     }
 
     private fun checkCooldown(sender: CommandSender): Boolean {
         if (cooldown <= 0) return true
         if (sender !is Player) return true
-        
+
         val commandKey = fullPath()
         return !KommandCooldowns.isOnCooldown(sender.uniqueId, commandKey, cooldown)
     }
@@ -163,6 +159,7 @@ sealed class Kommand(
                         senderTypeMessage.asComponent()
                     }
                 }
+
                 SenderType.CONSOLE_ONLY -> {
                     if (senderTypeMessage.asComponent() == Component.empty()) {
                         Component.text("This command can only be used from console.", NamedTextColor.RED)
@@ -170,6 +167,7 @@ sealed class Kommand(
                         senderTypeMessage.asComponent()
                     }
                 }
+
                 SenderType.ANY -> senderTypeMessage.asComponent()
             }
             sender.sendMessage(message)
@@ -253,22 +251,16 @@ sealed class Kommand(
         resolveHelpFormatter().send(sender, label, commands)
     }
 
-    private fun visibleSubCommands(sender: CommandSender): List<SubKommand> {
-        return subCommands.filter { it.hasPermission(sender) }
+    private fun visibleSubCommands(sender: CommandSender): List<SubKommand> = subCommands.filter { it.hasPermission(sender) }
+
+    private fun findSubCommand(name: String?): SubKommand? = name?.let { requested ->
+        subCommands.firstOrNull { it.name.equals(requested, ignoreCase = true) }
     }
 
-    private fun findSubCommand(name: String?): SubKommand? {
-        return name?.let { requested ->
-            subCommands.firstOrNull { it.name.equals(requested, ignoreCase = true) }
-        }
-    }
-
-    private fun resolveHelpFormatter(): KommandHelpFormatter {
-        return generateSequence(this) { it.parent }
-            .mapNotNull(Kommand::customHelpFormatter)
-            .firstOrNull()
-            ?: DefaultKommandHelpFormatter
-    }
+    private fun resolveHelpFormatter(): KommandHelpFormatter = generateSequence(this) { it.parent }
+        .mapNotNull(Kommand::customHelpFormatter)
+        .firstOrNull()
+        ?: DefaultKommandHelpFormatter
 }
 
 class BaseKommand internal constructor(
@@ -284,7 +276,7 @@ class BaseKommand internal constructor(
     senderType: SenderType,
     senderTypeMessage: ComponentLike,
     cooldown: Long,
-    cooldownMessage: ComponentLike
+    cooldownMessage: ComponentLike,
 ) : Kommand(
     parent = null,
     name = command.name,
@@ -298,8 +290,10 @@ class BaseKommand internal constructor(
     senderType = senderType,
     senderTypeMessage = senderTypeMessage,
     cooldown = cooldown,
-    cooldownMessage = cooldownMessage
-), CommandExecutor, TabCompleter {
+    cooldownMessage = cooldownMessage,
+),
+    CommandExecutor,
+    TabCompleter {
 
     init {
         bind()
@@ -314,10 +308,8 @@ class BaseKommand internal constructor(
         sender: CommandSender,
         command: Command,
         alias: String,
-        args: Array<out String>
-    ): List<String> {
-        return complete(KommandContext(this, sender, command, alias, args.toList()))
-    }
+        args: Array<out String>,
+    ): List<String> = complete(KommandContext(this, sender, command, alias, args.toList()))
 
     private fun bind() {
         command.aliases = aliases
@@ -379,7 +371,7 @@ class SubKommand internal constructor(
     senderType: SenderType,
     senderTypeMessage: ComponentLike,
     cooldown: Long,
-    cooldownMessage: ComponentLike
+    cooldownMessage: ComponentLike,
 ) : Kommand(
     parent = parent,
     name = name,
@@ -393,16 +385,12 @@ class SubKommand internal constructor(
     senderType = senderType,
     senderTypeMessage = senderTypeMessage,
     cooldown = cooldown,
-    cooldownMessage = cooldownMessage
+    cooldownMessage = cooldownMessage,
 )
 
-private fun String.parseUsage(): List<String> {
-    return usageArgPattern.findAll(trim()).map { it.value }.toList()
-}
+private fun String.parseUsage(): List<String> = usageArgPattern.findAll(trim()).map { it.value }.toList()
 
-private fun String.requiredArgsCount(): Int {
-    return parseUsage().count { it.startsWith("<") }
-}
+private fun String.requiredArgsCount(): Int = parseUsage().count { it.startsWith("<") }
 
 private fun String.isValid(args: List<String>): Boolean {
     val usageParts = parseUsage()

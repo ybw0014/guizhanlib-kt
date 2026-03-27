@@ -9,5 +9,4 @@ inline fun <reified T : Enum<T>> valueOfOrNull(name: String): T? = enumValues<T>
  * Check if the given two objects matches the two objects in a [Pair],
  * regardless of the order.
  */
-fun <T> Pair<T, T>.matches(obj1: T, obj2: T) =
-    (first == obj1 && second == obj2) || (first == obj2 && second == obj1)
+fun <T> Pair<T, T>.matches(obj1: T, obj2: T) = (first == obj1 && second == obj2) || (first == obj2 && second == obj1)

@@ -17,7 +17,7 @@ class ConfigMigration(val fromVersion: Int, val toVersion: Int) {
             if (config.contains(oldPath)) {
                 val value = config.get(oldPath)
                 config.set(newPath, value)
-                config.set(oldPath, null)  // Remove old path
+                config.set(oldPath, null) // Remove old path
             }
         }
     }

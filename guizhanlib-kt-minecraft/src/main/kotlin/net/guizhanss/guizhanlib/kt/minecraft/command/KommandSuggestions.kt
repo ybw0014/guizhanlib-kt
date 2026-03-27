@@ -33,15 +33,13 @@ class TabBuilder {
         positions.forEach { suggestionsByPosition[it] = provider }
     }
 
-    internal fun build(): KommandTabCompleter {
-        return KommandTabCompleter { context ->
-            val currentArg = context.args.lastOrNull().orEmpty()
-            suggestionsByPosition[context.size - 1]
-                ?.suggest(context, currentArg)
-                ?.filter { it.startsWith(currentArg, ignoreCase = true) }
-                ?.toList()
-                ?: emptyList()
-        }
+    internal fun build(): KommandTabCompleter = KommandTabCompleter { context ->
+        val currentArg = context.args.lastOrNull().orEmpty()
+        suggestionsByPosition[context.size - 1]
+            ?.suggest(context, currentArg)
+            ?.filter { it.startsWith(currentArg, ignoreCase = true) }
+            ?.toList()
+            ?: emptyList()
     }
 }
 
@@ -83,21 +81,19 @@ fun suggest(values: Iterable<String>): SuggestionsProvider = SuggestionsProvider
     values.toList()
 }
 
-fun suggestWithPermission(vararg values: String, permissionPrefix: String): SuggestionsProvider =
-    SuggestionsProvider { context, _ ->
-        val permissible: Permissible = context.sender
-        values.filter { permissible.hasPermission("$permissionPrefix.$it") }
-    }
+fun suggestWithPermission(vararg values: String, permissionPrefix: String): SuggestionsProvider = SuggestionsProvider { context, _ ->
+    val permissible: Permissible = context.sender
+    values.filter { permissible.hasPermission("$permissionPrefix.$it") }
+}
 
-fun suggestAny(vararg providers: SuggestionsProvider): SuggestionsProvider =
-    SuggestionsProvider { context, currentArg ->
-        providers.flatMap { it.suggest(context, currentArg) }
-    }
+fun suggestAny(vararg providers: SuggestionsProvider): SuggestionsProvider = SuggestionsProvider { context, currentArg ->
+    providers.flatMap { it.suggest(context, currentArg) }
+}
 
 fun suggestIf(
     condition: (context: KommandContext) -> Boolean,
     ifTrue: SuggestionsProvider,
-    ifFalse: SuggestionsProvider = SuggestionsProvider { _, _ -> emptyList() }
+    ifFalse: SuggestionsProvider = SuggestionsProvider { _, _ -> emptyList() },
 ): SuggestionsProvider = SuggestionsProvider { context, currentArg ->
     if (condition(context)) {
         ifTrue.suggest(context, currentArg)
@@ -106,11 +102,9 @@ fun suggestIf(
     }
 }
 
-private fun CommandSender.canSeePlayer(player: Player): Boolean {
-    return when (this) {
-        is Player -> this.canSee(player)
-        else -> true
-    }
+private fun CommandSender.canSeePlayer(player: Player): Boolean = when (this) {
+    is Player -> this.canSee(player)
+    else -> true
 }
 
 fun suggestPlayerThenActions(vararg actions: String): TabBuilder.() -> Unit = {

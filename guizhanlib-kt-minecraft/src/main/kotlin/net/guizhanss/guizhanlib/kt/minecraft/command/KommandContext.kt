@@ -10,7 +10,7 @@ data class KommandContext(
     val sender: CommandSender,
     val command: Command,
     val label: String,
-    val args: List<String>
+    val args: List<String>,
 ) {
 
     val argsArray: Array<String>
@@ -23,7 +23,5 @@ data class KommandContext(
 
     fun argOrNull(index: Int): String? = args.getOrNull(index)
 
-    internal fun child(childKommand: Kommand, childArgs: List<String>): KommandContext {
-        return copy(kommand = childKommand, args = childArgs)
-    }
+    internal fun child(childKommand: Kommand, childArgs: List<String>): KommandContext = copy(kommand = childKommand, args = childArgs)
 }

@@ -9,5 +9,5 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon
  */
 abstract class ItemRegistry(
     val addon: SlimefunAddon,
-    val prefix: String = addon.javaPlugin.name.uppercase()
+    val prefix: String = addon.javaPlugin.name.uppercase(),
 )

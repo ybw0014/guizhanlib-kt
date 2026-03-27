@@ -6,13 +6,13 @@ import org.mockbukkit.mockbukkit.MockBukkit
 import org.mockbukkit.mockbukkit.ServerMock
 import org.mockbukkit.mockbukkit.entity.ItemMock
 import org.mockbukkit.mockbukkit.world.WorldMock
+import kotlin.collections.filterIsInstance
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.collections.filterIsInstance
 
 class ItemStackExtTest {
 

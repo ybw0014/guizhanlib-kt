@@ -9,7 +9,7 @@ import kotlin.reflect.KProperty
  * @see ConfigContainer
  */
 class ConfigField<T>(
-    private val loader: () -> T
+    private val loader: () -> T,
 ) : ReadOnlyProperty<Any?, T> {
 
     private var cached: T = loader()
