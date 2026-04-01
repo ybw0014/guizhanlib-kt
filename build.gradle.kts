@@ -54,8 +54,8 @@ subprojects {
         compileOnlyAndTestImpl(kotlin("stdlib"))
         compileOnlyAndTestImpl(kotlin("reflect"))
         compileOnlyAndTestImpl("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.1")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.3")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.14.3")
         testImplementation("com.github.MockBukkit:MockBukkit:v1.21-SNAPSHOT")
         testImplementation(kotlin("test"))
     }
