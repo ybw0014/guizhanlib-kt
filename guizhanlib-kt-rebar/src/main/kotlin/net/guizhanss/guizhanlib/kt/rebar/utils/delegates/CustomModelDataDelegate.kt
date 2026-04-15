@@ -9,32 +9,32 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * Property delegation to read/set a prefixed string value in the bound stack's
+ * Property delegation to read/set a prefixed value in the bound stack's
  * CustomModelData strings list.
  *
  * Treats CMD strings like a key-value store where the key is the [prefix].
- * For example, with prefix `"myitem:variant:"`, the CMD strings `["myitem:variant:active"]`
- * stores the value `"active"`.
+ * For example, with prefix `"myitem:variant:"` and [CustomModelDataType.STRING],
+ * the CMD strings `["myitem:variant:active"]` stores the value `"active"`.
  *
  * When writing, the existing CMD component's floats/flags/colors are preserved.
  *
  * Usage:
  * ```
  * class MyItem(...) : RebarItem(...) {
- *     var variant by customModelDataString("myitem:variant:", "default")
+ *     var variant by customModelDataString("myitem:variant:", CustomModelDataType.STRING)
+ *     var tier by customModelDataString("myitem:tier:", CustomModelDataType.INTEGER, 1)
  * }
  * ```
  */
 @JvmSynthetic
 inline fun <reified T : RebarItem, V> T.customModelDataString(
     prefix: String,
-    crossinline deserialize: (String) -> V,
-    crossinline serialize: (V) -> String,
+    type: CustomModelDataType<V>,
 ) = object : ReadWriteProperty<T, V?> {
     override fun getValue(thisRef: T, property: KProperty<*>): V? {
         val cmd = thisRef.stack.getData(DataComponentTypes.CUSTOM_MODEL_DATA) ?: return null
         val entry = cmd.strings().firstOrNull { it.startsWith(prefix) } ?: return null
-        return deserialize(entry.removePrefix(prefix))
+        return type.fromString(entry.removePrefix(prefix))
     }
 
     override fun setValue(thisRef: T, property: KProperty<*>, value: V?) {
@@ -68,7 +68,7 @@ inline fun <reified T : RebarItem, V> T.customModelDataString(
         }
 
         val oldStrings = existing?.strings()?.toMutableList() ?: mutableListOf()
-        val newEntry = prefix + serialize(value)
+        val newEntry = prefix + type.toString(value)
 
         val idx = oldStrings.indexOfFirst { it.startsWith(prefix) }
         if (idx >= 0) {
@@ -92,17 +92,16 @@ inline fun <reified T : RebarItem, V> T.customModelDataString(
 @JvmSynthetic
 inline fun <reified T : RebarItem, V> T.customModelDataString(
     prefix: String,
-    crossinline deserialize: (String) -> V,
-    crossinline serialize: (V) -> String,
+    type: CustomModelDataType<V>,
     crossinline default: () -> V,
 ) = object : ReadWriteProperty<T, V> {
     override fun getValue(thisRef: T, property: KProperty<*>): V {
-        val nullable = thisRef.customModelDataString<T, V>(prefix, deserialize, serialize)
+        val nullable = thisRef.customModelDataString<T, V>(prefix, type)
         return nullable.getValue(thisRef, property) ?: default()
     }
 
     override fun setValue(thisRef: T, property: KProperty<*>, value: V) {
-        val nullable = thisRef.customModelDataString<T, V>(prefix, deserialize, serialize)
+        val nullable = thisRef.customModelDataString<T, V>(prefix, type)
         nullable.setValue(thisRef, property, value)
     }
 }
@@ -110,27 +109,6 @@ inline fun <reified T : RebarItem, V> T.customModelDataString(
 @JvmSynthetic
 inline fun <reified T : RebarItem, V> T.customModelDataString(
     prefix: String,
-    crossinline deserialize: (String) -> V,
-    crossinline serialize: (V) -> String,
+    type: CustomModelDataType<V>,
     default: V,
-) = customModelDataString(prefix, deserialize, serialize) { default }
-
-@JvmSynthetic
-inline fun <reified T : RebarItem> T.customModelDataString(
-    prefix: String,
-) = customModelDataString<T, String>(
-    prefix = prefix,
-    deserialize = { it },
-    serialize = { it },
-)
-
-@JvmSynthetic
-inline fun <reified T : RebarItem> T.customModelDataString(
-    prefix: String,
-    default: String,
-) = customModelDataString<T, String>(
-    prefix = prefix,
-    deserialize = { it },
-    serialize = { it },
-    default = default,
-)
+) = customModelDataString(prefix, type) { default }
