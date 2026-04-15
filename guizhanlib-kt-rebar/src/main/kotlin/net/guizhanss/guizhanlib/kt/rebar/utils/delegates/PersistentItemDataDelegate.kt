@@ -1,4 +1,4 @@
-package net.guizhanss.guizhanlib.kt.rebar.utils
+package net.guizhanss.guizhanlib.kt.rebar.utils.delegates
 
 import io.github.pylonmc.rebar.item.RebarItem
 import org.bukkit.NamespacedKey
