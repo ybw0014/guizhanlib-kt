@@ -43,10 +43,8 @@ inline fun <reified T : RebarItem, V> T.customModelDataString(
 
         if (value == null) {
             val cmd = existing ?: return
-            val oldStrings = cmd.strings().toMutableList()
-            val idx = oldStrings.indexOfFirst { it.startsWith(prefix) }
-            if (idx < 0) return
-            oldStrings.removeAt(idx)
+            val oldStrings = cmd.strings().filterNot { it.startsWith(prefix) }.toMutableList()
+            if (oldStrings.size == cmd.strings().size) return
             if (oldStrings.isEmpty()
                 && cmd.floats().isEmpty()
                 && cmd.flags().isEmpty()
@@ -69,10 +67,17 @@ inline fun <reified T : RebarItem, V> T.customModelDataString(
 
         val oldStrings = existing?.strings()?.toMutableList() ?: mutableListOf()
         val newEntry = prefix + type.toString(value)
-
-        val idx = oldStrings.indexOfFirst { it.startsWith(prefix) }
-        if (idx >= 0) {
-            oldStrings[idx] = newEntry
+        val firstIdx = oldStrings.indexOfFirst { it.startsWith(prefix) }
+        if (firstIdx >= 0) {
+            oldStrings[firstIdx] = newEntry
+            var i = firstIdx + 1
+            while (i < oldStrings.size) {
+                if (oldStrings[i].startsWith(prefix)) {
+                    oldStrings.removeAt(i)
+                } else {
+                    i++
+                }
+            }
         } else {
             oldStrings.add(newEntry)
         }
