@@ -13,5 +13,5 @@ dependencies {
     api(project(":guizhanlib-kt-common", configuration = "shadow"))
     api(project(":guizhanlib-kt-minecraft", configuration = "shadow"))
     compileOnlyAndTestImpl("net.guizhanss:guizhanlib-rebar:$guizhanLibVersion")
-    compileOnlyAndTestImpl("io.github.pylonmc:rebar:0.36.2")
+    compileOnlyAndTestImpl("io.github.pylonmc:rebar:0.41.0-26.1")
 }

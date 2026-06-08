@@ -1,6 +1,6 @@
 package net.guizhanss.guizhanlib.kt.rebar.items
 
-import io.github.pylonmc.rebar.block.base.RebarInteractBlock
+import io.github.pylonmc.rebar.block.interfaces.InteractRebarBlockHandler
 import io.github.pylonmc.rebar.event.api.annotation.MultiHandler
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
@@ -9,15 +9,15 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 
 /**
- * A [RebarInteractBlock] which the interaction always happen with main hand.
+ * A [InteractRebarBlockHandler] which the interaction always happen with main hand.
  */
-interface RebarMainHandInteractBlock : RebarInteractBlock {
+interface MainHandInteractRebarBlockHandler : InteractRebarBlockHandler {
 
     /**
      * Override [onMainHandInteract] instead.
      */
     @MultiHandler([EventPriority.NORMAL, EventPriority.MONITOR])
-    override fun onInteract(
+    override fun onInteractedWith(
         event: PlayerInteractEvent,
         priority: EventPriority,
     ) {
@@ -34,8 +34,8 @@ interface RebarMainHandInteractBlock : RebarInteractBlock {
             event.setUseInteractedBlock(Event.Result.DENY)
         }
 
-        onMainHandInteract(event)
+        onMainHandInteractedWith(event)
     }
 
-    fun onMainHandInteract(event: PlayerInteractEvent)
+    fun onMainHandInteractedWith(event: PlayerInteractEvent)
 }
