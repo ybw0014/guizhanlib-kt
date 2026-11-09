@@ -5,7 +5,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    kotlin("jvm") version "2.3.10"
+    kotlin("jvm") version "2.4.21"
     id("com.gradleup.shadow") version "9.4.2"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("org.jetbrains.dokka") version "2.2.0"
