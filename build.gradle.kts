@@ -9,7 +9,7 @@ plugins {
     id("com.gradleup.shadow") version "9.4.2"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("org.jetbrains.dokka") version "2.2.0"
-    id("com.diffplug.spotless") version "8.3.0"
+    id("com.diffplug.spotless") version "8.11.0"
 }
 
 group = "net.guizhanss"
