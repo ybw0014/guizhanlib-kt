@@ -6,9 +6,9 @@ plugins {
     `maven-publish`
     signing
     kotlin("jvm") version "2.3.10"
-    id("com.gradleup.shadow") version "8.3.6"
+    id("com.gradleup.shadow") version "9.4.2"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("org.jetbrains.dokka") version "1.9.10"
+    id("org.jetbrains.dokka") version "2.2.0"
     id("com.diffplug.spotless") version "8.3.0"
 }
 
@@ -84,12 +84,16 @@ subprojects {
 
     val javadocJar by tasks.creating(Jar::class) {
         archiveClassifier.set("javadoc")
-        from(tasks.named("dokkaHtml"))
-        dependsOn("dokkaHtml")
+        from(tasks.named("dokkaGenerateHtml"))
+        dependsOn("dokkaGenerateHtml")
     }
 
     tasks.withType<ShadowJar> {
         archiveClassifier = ""
+    }
+
+    tasks.named<Jar>("jar") {
+        archiveClassifier = "original"
     }
 
     publishing {

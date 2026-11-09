@@ -45,10 +45,10 @@ inline fun <reified T : RebarItem, V> T.customModelDataString(
             val cmd = existing ?: return
             val oldStrings = cmd.strings().filterNot { it.startsWith(prefix) }.toMutableList()
             if (oldStrings.size == cmd.strings().size) return
-            if (oldStrings.isEmpty()
-                && cmd.floats().isEmpty()
-                && cmd.flags().isEmpty()
-                && cmd.colors().isEmpty()
+            if (oldStrings.isEmpty() &&
+                cmd.floats().isEmpty() &&
+                cmd.flags().isEmpty() &&
+                cmd.colors().isEmpty()
             ) {
                 stack.unsetData(DataComponentTypes.CUSTOM_MODEL_DATA)
             } else {

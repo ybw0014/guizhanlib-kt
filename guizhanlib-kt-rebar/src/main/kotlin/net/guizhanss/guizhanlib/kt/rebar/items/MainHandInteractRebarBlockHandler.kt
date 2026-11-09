@@ -14,7 +14,7 @@ import org.bukkit.inventory.EquipmentSlot
 interface MainHandInteractRebarBlockHandler : InteractRebarBlockHandler {
 
     /**
-     * Override [onMainHandInteract] instead.
+     * Override [onMainHandInteractedWith] instead.
      */
     @MultiHandler([EventPriority.NORMAL, EventPriority.MONITOR])
     override fun onInteractedWith(
