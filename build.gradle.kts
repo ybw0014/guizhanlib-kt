@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "net.guizhanss"
-extra["guizhanLibVersion"] = "3.0.0-SNAPSHOT"
+extra["guizhanLibVersion"] = "3.1.0"
 
 allprojects {
     repositories {
